@@ -11,6 +11,14 @@ async function bootstrap(): Promise<void> {
     app.useGlobalPipes(new ValidationPipe());
     app.use(morgan('tiny'));
 
+    if (process.env.NODE_ENV === 'production') {
+        app.enableCors({
+            origin: ['http://cpf.easy-form.net'],
+            methods: 'POST,GET,PUT,PATCH,DELETE,OPTIONS',
+            credentials: true,
+        });
+    }
+
     const port = app.get(ConfigService).get<string>('PORT');
 
     await app.listen(port);
