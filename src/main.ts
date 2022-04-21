@@ -17,6 +17,8 @@ async function bootstrap(): Promise<void> {
             methods: 'POST,GET,PUT,PATCH,DELETE,OPTIONS',
             credentials: true,
         });
+    } else if (process.env.NODE_ENV === 'development') {
+        app.enableCors();
     }
 
     const port = app.get(ConfigService).get<string>('PORT');

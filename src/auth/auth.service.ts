@@ -23,7 +23,7 @@ export class AuthService {
 
     public getAccessToken(user: User): { access_token: string } {
         return {
-            access_token: this.jwtService.sign(user.email),
+            access_token: this.jwtService.sign(user._id.toString()),
         };
     }
 }
