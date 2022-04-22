@@ -4,6 +4,7 @@ import { MongooseModule, MongooseModuleOptions } from '@nestjs/mongoose';
 
 import { AuthModule } from 'src/auth';
 import { HealthModule } from 'src/health';
+import { LeadModule } from 'src/leads';
 import { UserModule } from 'src/users';
 import { AppController } from './app.controller';
 
@@ -19,6 +20,7 @@ import { AppController } from './app.controller';
         }),
         AuthModule,
         HealthModule,
+        LeadModule,
         UserModule,
     ],
     controllers: [AppController],
