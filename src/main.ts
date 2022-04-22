@@ -13,7 +13,7 @@ async function bootstrap(): Promise<void> {
 
     if (process.env.NODE_ENV === 'production') {
         app.enableCors({
-            origin: ['http://cpf.easy-form.net'],
+            origin: ['https://cpf.easy-form.net'],
             methods: 'POST,GET,PUT,PATCH,DELETE,OPTIONS',
             credentials: true,
         });
