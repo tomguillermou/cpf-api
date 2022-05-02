@@ -1,7 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { parse } from 'json2csv';
+import * as moment from 'moment';
 import { Model } from 'mongoose';
+
+import { LeadRow } from './interfaces';
 
 import { CreateLeadDto } from './lead.dto';
 import { Lead, LeadDocument } from './lead.model';
@@ -22,16 +25,16 @@ export class LeadService {
             { value: 'budget', label: 'Budget' },
             { value: 'connected', label: 'CPF' },
             { value: 'account', label: 'FranceConnect' },
-            { value: 'prospector', label: 'Prospecteur' },
+            { value: 'callDate', label: "Date d'appel" },
+            { value: 'callHour', label: "Plage horaire d'appel" },
+            { value: 'prospector', label: 'Prospecté par' },
+            { value: 'prospectionDate', label: 'Prospecté le' },
         ];
 
         const leads = await this._model.find().populate('prospector').lean().exec();
 
         return parse(
-            leads.map((lead) => ({
-                ...lead,
-                prospector: `${lead.prospector.firstname} ${lead.prospector.lastname}`,
-            })),
+            leads.map((lead) => this.getRowFromLead(lead)),
             { fields },
         );
     }
@@ -42,5 +45,53 @@ export class LeadService {
 
     public createOne(lead: CreateLeadDto): Promise<Lead> {
         return this._model.create(lead);
+    }
+
+    private getRowFromLead(lead: Lead): LeadRow {
+        return {
+            ...lead,
+            employed: this.translateBoolean(lead.employed),
+            sector: this.translateSector(lead.sector),
+            trained: this.translateBoolean(lead.trained),
+            connected: this.translateBoolean(lead.connected),
+            account: this.translateBoolean(lead.account),
+            callDate: moment.utc(lead.callDate).format('dddd D MMMM'),
+            callHour: this.translateDayPeriod(lead.callHour),
+            prospector: `${lead.prospector.firstname} ${lead.prospector.lastname}`,
+            prospectionDate: moment(lead.prospectionDate).format('dddd D MMMM [à] HH:mm'),
+        };
+    }
+
+    private translateBoolean(value: boolean): 'oui' | 'non' | '-' {
+        switch (value) {
+            case true:
+                return 'oui';
+            case false:
+                return 'non';
+            default:
+                return '-';
+        }
+    }
+
+    private translateSector(value: string): 'privé' | 'public' | '-' {
+        switch (value) {
+            case 'private':
+                return 'privé';
+            case 'public':
+                return 'public';
+            default:
+                return '-';
+        }
+    }
+
+    private translateDayPeriod(value: string): 'matin' | 'après-midi' | '-' {
+        switch (value) {
+            case 'morning':
+                return 'matin';
+            case 'afternoon':
+                return 'après-midi';
+            default:
+                return '-';
+        }
     }
 }

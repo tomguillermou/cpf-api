@@ -45,10 +45,21 @@ export class Lead {
     @Prop({ required: true })
     account: boolean;
 
-    // prospector
+    // call availability
+
+    @Prop({ required: true })
+    callDate: Date;
+
+    @Prop({ required: true, enum: ['morning', 'afternoon'] })
+    callHour: string;
+
+    // prospection
 
     @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'User' })
     prospector: User;
+
+    @Prop({ required: true })
+    prospectionDate: Date;
 }
 
 export type LeadDocument = Lead & Document;

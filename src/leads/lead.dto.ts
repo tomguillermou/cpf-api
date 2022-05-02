@@ -1,4 +1,4 @@
-import { IsBoolean, IsEmail, IsEnum, IsMongoId, IsNumber, IsString } from 'class-validator';
+import { IsEmail, IsEnum, IsMongoId, IsNumber, IsString } from 'class-validator';
 
 export class CreateLeadDto {
     @IsString()
@@ -37,6 +37,19 @@ export class CreateLeadDto {
     @IsString()
     account: string;
 
+    // call availability
+
+    @IsString()
+    callDate: string;
+
+    @IsEnum(['morning', 'afternoon'])
+    callHour: string;
+
+    // prospection
+
     @IsMongoId()
     prospector: string;
+
+    @IsString()
+    prospectionDate: string;
 }
