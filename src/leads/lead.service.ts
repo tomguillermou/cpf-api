@@ -1,19 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { parse } from 'json2csv';
-import { Model, Types } from 'mongoose';
-
-import { User, UserService } from 'src/users';
+import { Model } from 'mongoose';
 
 import { CreateLeadDto } from './lead.dto';
 import { Lead, LeadDocument } from './lead.model';
 
 @Injectable()
 export class LeadService {
-    constructor(
-        @InjectModel(Lead.name) private _model: Model<LeadDocument>,
-        private _userService: UserService,
-    ) {}
+    constructor(@InjectModel(Lead.name) private _model: Model<LeadDocument>) {}
 
     public async getCsvData(): Promise<unknown> {
         const fields = [
@@ -48,8 +43,4 @@ export class LeadService {
     public createOne(lead: CreateLeadDto): Promise<Lead> {
         return this._model.create(lead);
     }
-
-    // public async deleteOneById(id: string | Types.ObjectId): Promise<void> {
-    //     await this._model.deleteOne({ _id: id }).exec();
-    // }
 }

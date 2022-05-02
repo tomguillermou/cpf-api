@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Res } from '@nestjs/common';
+import { Body, Controller, Get, Post, Res } from '@nestjs/common';
 import { Response } from 'express';
 
 import { CreateLeadDto } from './lead.dto';
@@ -24,11 +24,4 @@ export class LeadController {
     public createLead(@Body() lead: CreateLeadDto): Promise<Lead> {
         return this._leadService.createOne(lead);
     }
-
-    // @Delete('delete/:id')
-    // public async deleteLead(@Param('id') id: string, @Res() res: Response): Promise<void> {
-    //     await this._leadService.deleteOneById(id);
-
-    //     return res.redirect('/dashboard');
-    // }
 }
