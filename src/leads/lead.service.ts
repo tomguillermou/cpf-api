@@ -55,10 +55,10 @@ export class LeadService {
             trained: this.translateBoolean(lead.trained),
             connected: this.translateBoolean(lead.connected),
             account: this.translateBoolean(lead.account),
-            callDate: moment.utc(lead.callDate).format('dddd D MMMM'),
+            callDate: moment.utc(lead.callDate).format('dddd D MMMM YYYY'),
             callHour: this.translateDayPeriod(lead.callHour),
             prospector: `${lead.prospector.firstname} ${lead.prospector.lastname}`,
-            prospectionDate: moment(lead.prospectionDate).format('dddd D MMMM [à] HH:mm'),
+            prospectionDate: moment(lead.prospectionDate).format('dddd D MMMM YYYY [à] HH:mm'),
         };
     }
 
